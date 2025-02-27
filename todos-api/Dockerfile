@@ -1,8 +1,14 @@
-# Dockerfile for Node.js Todos API
-FROM node:18-alpine
+FROM node:12
+
 WORKDIR /app
-COPY package.json package-lock.json ./
+
+# Copy package files and install dependencies
+COPY package*.json ./
 RUN npm install
-COPY . .
-EXPOSE 3000
-CMD ["node", "server.js"]
+
+# Copy project files
+COPY todos-api/ .
+
+EXPOSE 8082
+
+CMD ["npm", "server.js"]

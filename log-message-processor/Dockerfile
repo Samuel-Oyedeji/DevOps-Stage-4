@@ -1,7 +1,12 @@
-# Dockerfile for Python Log Message Processor
-FROM python:3.10-slim
+FROM python:3.9-slim
+
 WORKDIR /app
-COPY requirements.txt .
+
+# Copy requirements file and install dependencies
+COPY log-message-processor/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-COPY . .
-CMD ["python", "processor.py"]
+
+# Copy project files
+COPY log-message-processor/ .
+
+CMD ["python", "main.py"]
