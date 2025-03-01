@@ -1,27 +1,12 @@
-FROM maven:3.8.6-openjdk-11 AS build
-
+# Java Spring Boot Users API
+FROM maven:3.8.6-openjdk-11 AS builder
 WORKDIR /app
-
-# Copy pom.xml
-COPY users-api/pom.xml .
-
-# Download dependencies (this layer can be cached)
-RUN mvn dependency:go-offline -B
-
-# Copy source code
-COPY users-api/src ./src
-
-# Build the application
+COPY pom.xml .
+COPY src ./src
 RUN mvn package -DskipTests
 
-# Final stage
-FROM openjdk:11-jre-slim
-
+FROM openjdk:8-jre-slim
 WORKDIR /app
-
-# Copy JAR from build stage
-COPY --from=build /app/target/*.jar app.jar
-
+COPY --from=builder /app/target/*.jar ./users-api.jar
 EXPOSE 8083
-
-CMD ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "users-api.jar"]

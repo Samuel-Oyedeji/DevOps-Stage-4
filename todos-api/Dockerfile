@@ -1,14 +1,8 @@
-FROM node:12
-
+# Node.js Todos API
+FROM node:16
 WORKDIR /app
-
-# Copy package files and install dependencies
 COPY package*.json ./
 RUN npm install
-
-# Copy project files
-COPY todos-api/ .
-
+COPY . .
 EXPOSE 8082
-
-CMD ["npm", "server.js"]
+CMD ["node", "server.js"]
